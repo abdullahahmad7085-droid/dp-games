@@ -1,0 +1,1224 @@
+/* =========================================================
+   DP GAMES — FINAL GAME ENGINE
+   ========================================================= */
+
+
+/* =========================================================
+   DOM READY
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    initNumberGuessing();
+    initRockPaperScissors();
+    initTicTacToe();
+
+});
+
+
+/* =========================================================
+   NUMBER GUESSING GAME
+   ========================================================= */
+
+function initNumberGuessing() {
+
+    let secretNumber = generateSecretNumber();
+    let attempts = 0;
+    let gameWon = false;
+
+
+    const input =
+        document.getElementById("guess-input");
+
+    const guessButton =
+        document.getElementById("guess-button");
+
+    const resetButton =
+        document.getElementById("guess-reset");
+
+    const message =
+        document.getElementById("guess-message");
+
+    const attemptDisplay =
+        document.getElementById("attempt-count");
+
+
+    if (
+        !input ||
+        !guessButton ||
+        !resetButton ||
+        !message ||
+        !attemptDisplay
+    ) {
+        console.error(
+            "Number Guessing elements missing."
+        );
+
+        return;
+    }
+
+
+    function generateSecretNumber() {
+
+        return Math.floor(
+            Math.random() * 100
+        ) + 1;
+
+    }
+
+
+    function checkGuess() {
+
+        if (gameWon) {
+
+            message.textContent =
+                "🏆 You already won! Start a new game.";
+
+            return;
+        }
+
+
+        const value =
+            input.value.trim();
+
+
+        if (value === "") {
+
+            message.textContent =
+                "⚠️ Enter a number first.";
+
+            input.focus();
+
+            return;
+        }
+
+
+        const guess =
+            Number(value);
+
+
+        if (
+            !Number.isInteger(guess) ||
+            guess < 1 ||
+            guess > 100
+        ) {
+
+            message.textContent =
+                "⚠️ Enter a number between 1 and 100.";
+
+            input.focus();
+
+            return;
+        }
+
+
+        attempts++;
+
+        attemptDisplay.textContent =
+            attempts;
+
+
+        if (guess === secretNumber) {
+
+            gameWon = true;
+
+            message.textContent =
+                "🎉 CORRECT! You found it in " +
+                attempts +
+                " attempts.";
+
+            input.value = "";
+
+            return;
+        }
+
+
+        if (guess < secretNumber) {
+
+            message.textContent =
+                "⬆️ TOO LOW — Try a higher number.";
+
+        } else {
+
+            message.textContent =
+                "⬇️ TOO HIGH — Try a lower number.";
+
+        }
+
+
+        input.value = "";
+
+        input.focus();
+
+    }
+
+
+    function resetGame() {
+
+        secretNumber =
+            generateSecretNumber();
+
+        attempts = 0;
+
+        gameWon = false;
+
+        input.value = "";
+
+        attemptDisplay.textContent =
+            "0";
+
+        message.textContent =
+            "Make your first guess.";
+
+        input.focus();
+
+    }
+
+
+    guessButton.addEventListener(
+        "click",
+        checkGuess
+    );
+
+
+    resetButton.addEventListener(
+        "click",
+        resetGame
+    );
+
+
+    input.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Enter") {
+
+                checkGuess();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ROCK PAPER SCISSORS
+   ========================================================= */
+
+function initRockPaperScissors() {
+
+    let playerScore = 0;
+    let computerScore = 0;
+
+
+    const choices = [
+        "rock",
+        "paper",
+        "scissors"
+    ];
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".rps-choice"
+        );
+
+
+    const result =
+        document.getElementById(
+            "rps-result"
+        );
+
+
+    const playerScoreDisplay =
+        document.getElementById(
+            "player-score"
+        );
+
+
+    const computerScoreDisplay =
+        document.getElementById(
+            "computer-score"
+        );
+
+
+    const resetButton =
+        document.getElementById(
+            "rps-reset"
+        );
+
+
+    if (
+        buttons.length !== 3 ||
+        !result ||
+        !playerScoreDisplay ||
+        !computerScoreDisplay ||
+        !resetButton
+    ) {
+
+        console.error(
+            "Rock Paper Scissors elements missing."
+        );
+
+        return;
+
+    }
+
+
+    function computerMove() {
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                choices.length
+            );
+
+        return choices[randomIndex];
+
+    }
+
+
+    function getWinner(
+        player,
+        computer
+    ) {
+
+        if (player === computer) {
+
+            return "draw";
+
+        }
+
+
+        if (
+
+            (player === "rock" &&
+                computer === "scissors") ||
+
+            (player === "paper" &&
+                computer === "rock") ||
+
+            (player === "scissors" &&
+                computer === "paper")
+
+        ) {
+
+            return "player";
+
+        }
+
+
+        return "computer";
+
+    }
+
+
+    function prettyName(choice) {
+
+        return (
+            choice.charAt(0).toUpperCase() +
+            choice.slice(1)
+        );
+
+    }
+
+
+    function play(choice) {
+
+        if (!choices.includes(choice)) {
+
+            return;
+
+        }
+
+
+        const computerChoice =
+            computerMove();
+
+
+        const winner =
+            getWinner(
+                choice,
+                computerChoice
+            );
+
+
+        if (winner === "draw") {
+
+            result.textContent =
+                "🤝 DRAW — Both chose " +
+                prettyName(choice) +
+                ".";
+
+        }
+
+
+        else if (winner === "player") {
+
+            playerScore++;
+
+            result.textContent =
+                "🎉 YOU WIN — " +
+                prettyName(choice) +
+                " beats " +
+                prettyName(computerChoice) +
+                ".";
+
+        }
+
+
+        else {
+
+            computerScore++;
+
+            result.textContent =
+                "🤖 CPU WINS — " +
+                prettyName(computerChoice) +
+                " beats " +
+                prettyName(choice) +
+                ".";
+
+        }
+
+
+        playerScoreDisplay.textContent =
+            playerScore;
+
+
+        computerScoreDisplay.textContent =
+            computerScore;
+
+    }
+
+
+    function resetGame() {
+
+        playerScore = 0;
+
+        computerScore = 0;
+
+        playerScoreDisplay.textContent =
+            "0";
+
+        computerScoreDisplay.textContent =
+            "0";
+
+        result.textContent =
+            "Choose your move.";
+
+    }
+
+
+    buttons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                play(
+                    button.dataset.choice
+                );
+
+            }
+        );
+
+    });
+
+
+    resetButton.addEventListener(
+        "click",
+        resetGame
+    );
+
+}
+
+
+/* =========================================================
+   TIC TAC TOE
+   ========================================================= */
+
+function initTicTacToe() {
+
+    let board = [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ];
+
+
+    let mode = "friend";
+
+    let currentPlayer = "X";
+
+    let gameOver = false;
+
+    let computerThinking = false;
+
+    let xScore = 0;
+
+    let oScore = 0;
+
+    let computerTimer = null;
+
+
+    const winningPatterns = [
+
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+
+        [0, 4, 8],
+        [2, 4, 6]
+
+    ];
+
+
+    const cells =
+        document.querySelectorAll(
+            ".ttt-cell"
+        );
+
+
+    const modeButtons =
+        document.querySelectorAll(
+            ".ttt-mode"
+        );
+
+
+    const result =
+        document.getElementById(
+            "ttt-result"
+        );
+
+
+    const xScoreDisplay =
+        document.getElementById(
+            "x-score"
+        );
+
+
+    const oScoreDisplay =
+        document.getElementById(
+            "o-score"
+        );
+
+
+    const resetButton =
+        document.getElementById(
+            "ttt-reset"
+        );
+
+
+    if (
+        cells.length !== 9 ||
+        modeButtons.length !== 2 ||
+        !result ||
+        !xScoreDisplay ||
+        !oScoreDisplay ||
+        !resetButton
+    ) {
+
+        console.error(
+            "Tic Tac Toe elements missing."
+        );
+
+        return;
+
+    }
+
+
+    /* =========================================
+       RENDER BOARD
+    ========================================== */
+
+    function renderBoard() {
+
+        cells.forEach(
+            (cell, index) => {
+
+                cell.textContent =
+                    board[index];
+
+                cell.classList.remove(
+                    "ttt-x",
+                    "ttt-o",
+                    "ttt-winning"
+                );
+
+
+                if (board[index] === "X") {
+
+                    cell.classList.add(
+                        "ttt-x"
+                    );
+
+                }
+
+
+                if (board[index] === "O") {
+
+                    cell.classList.add(
+                        "ttt-o"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =========================================
+       UPDATE SCORE
+    ========================================== */
+
+    function updateScore() {
+
+        xScoreDisplay.textContent =
+            xScore;
+
+        oScoreDisplay.textContent =
+            oScore;
+
+    }
+
+
+    /* =========================================
+       UPDATE MESSAGE
+    ========================================== */
+
+    function updateMessage(customMessage = "") {
+
+        if (customMessage) {
+
+            result.textContent =
+                customMessage;
+
+            return;
+
+        }
+
+
+        if (mode === "friend") {
+
+            result.textContent =
+                "Player " +
+                currentPlayer +
+                "'s turn";
+
+        }
+
+        else {
+
+            result.textContent =
+                "🎮 Your turn — X";
+
+        }
+
+    }
+
+
+    /* =========================================
+       WIN CHECK
+    ========================================== */
+
+    function getWinningPattern(
+        player
+    ) {
+
+        return winningPatterns.find(
+            pattern => {
+
+                const [a, b, c] =
+                    pattern;
+
+                return (
+                    board[a] === player &&
+                    board[b] === player &&
+                    board[c] === player
+                );
+
+            }
+        ) || null;
+
+    }
+
+
+    /* =========================================
+       DRAW CHECK
+    ========================================== */
+
+    function isDraw() {
+
+        return board.every(
+            cell => cell !== ""
+        );
+
+    }
+
+
+    /* =========================================
+       HIGHLIGHT WINNER
+    ========================================== */
+
+    function highlightWinner(
+        pattern
+    ) {
+
+        pattern.forEach(index => {
+
+            cells[index].classList.add(
+                "ttt-winning"
+            );
+
+        });
+
+    }
+
+
+    /* =========================================
+       MAKE MOVE
+    ========================================== */
+
+    function makeMove(
+        index,
+        player
+    ) {
+
+        if (
+            gameOver ||
+            board[index] !== ""
+        ) {
+
+            return false;
+
+        }
+
+
+        board[index] =
+            player;
+
+
+        renderBoard();
+
+
+        const winningPattern =
+            getWinningPattern(player);
+
+
+        if (winningPattern) {
+
+            gameOver = true;
+
+            highlightWinner(
+                winningPattern
+            );
+
+
+            if (player === "X") {
+
+                xScore++;
+
+            }
+
+            else {
+
+                oScore++;
+
+            }
+
+
+            updateScore();
+
+
+            if (mode === "computer") {
+
+                if (player === "X") {
+
+                    updateMessage(
+                        "🏆 YOU WIN!"
+                    );
+
+                }
+
+                else {
+
+                    updateMessage(
+                        "🤖 COMPUTER WINS!"
+                    );
+
+                }
+
+            }
+
+            else {
+
+                updateMessage(
+                    "🏆 PLAYER " +
+                    player +
+                    " WINS!"
+                );
+
+            }
+
+
+            return true;
+
+        }
+
+
+        if (isDraw()) {
+
+            gameOver = true;
+
+            updateMessage(
+                "🤝 IT'S A DRAW!"
+            );
+
+            return true;
+
+        }
+
+
+        return true;
+
+    }
+
+
+    /* =========================================
+       FIND WINNING MOVE
+    ========================================== */
+
+    function findWinningMove(
+        player
+    ) {
+
+        for (
+            const pattern
+            of winningPatterns
+        ) {
+
+            const [a, b, c] =
+                pattern;
+
+
+            const values = [
+                board[a],
+                board[b],
+                board[c]
+            ];
+
+
+            const playerCount =
+                values.filter(
+                    value =>
+                        value === player
+                ).length;
+
+
+            const emptyCount =
+                values.filter(
+                    value =>
+                        value === ""
+                ).length;
+
+
+            if (
+                playerCount === 2 &&
+                emptyCount === 1
+            ) {
+
+                if (board[a] === "") {
+                    return a;
+                }
+
+                if (board[b] === "") {
+                    return b;
+                }
+
+                if (board[c] === "") {
+                    return c;
+                }
+
+            }
+
+        }
+
+
+        return -1;
+
+    }
+
+
+    /* =========================================
+       COMPUTER AI
+    ========================================== */
+
+    function getComputerMove() {
+
+        /* 1 — WIN */
+
+        const winningMove =
+            findWinningMove("O");
+
+
+        if (winningMove !== -1) {
+
+            return winningMove;
+
+        }
+
+
+        /* 2 — BLOCK */
+
+        const blockingMove =
+            findWinningMove("X");
+
+
+        if (blockingMove !== -1) {
+
+            return blockingMove;
+
+        }
+
+
+        /* 3 — CENTER */
+
+        if (board[4] === "") {
+
+            return 4;
+
+        }
+
+
+        /* 4 — CORNERS */
+
+        const corners = [
+            0,
+            2,
+            6,
+            8
+        ];
+
+
+        const availableCorners =
+            corners.filter(
+                index =>
+                    board[index] === ""
+            );
+
+
+        if (
+            availableCorners.length > 0
+        ) {
+
+            return availableCorners[
+                Math.floor(
+                    Math.random() *
+                    availableCorners.length
+                )
+            ];
+
+        }
+
+
+        /* 5 — SIDES */
+
+        const sides = [
+            1,
+            3,
+            5,
+            7
+        ];
+
+
+        const availableSides =
+            sides.filter(
+                index =>
+                    board[index] === ""
+            );
+
+
+        if (
+            availableSides.length > 0
+        ) {
+
+            return availableSides[
+                Math.floor(
+                    Math.random() *
+                    availableSides.length
+                )
+            ];
+
+        }
+
+
+        return -1;
+
+    }
+
+
+    /* =========================================
+       COMPUTER TURN
+    ========================================== */
+
+    function computerTurn() {
+
+        computerThinking = false;
+
+
+        if (
+            gameOver ||
+            mode !== "computer"
+        ) {
+
+            return;
+
+        }
+
+
+        const move =
+            getComputerMove();
+
+
+        if (move !== -1) {
+
+            makeMove(
+                move,
+                "O"
+            );
+
+        }
+
+
+        if (!gameOver) {
+
+            currentPlayer = "X";
+
+            updateMessage(
+                "🎮 YOUR TURN — X"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       CELL CLICK
+    ========================================== */
+
+    cells.forEach(cell => {
+
+        cell.addEventListener(
+            "click",
+            () => {
+
+                const index =
+                    Number(
+                        cell.dataset.cell
+                    );
+
+
+                if (
+                    gameOver ||
+                    board[index] !== ""
+                ) {
+
+                    return;
+
+                }
+
+
+                if (mode === "friend") {
+
+                    makeMove(
+                        index,
+                        currentPlayer
+                    );
+
+
+                    if (!gameOver) {
+
+                        currentPlayer =
+                            currentPlayer === "X"
+                                ? "O"
+                                : "X";
+
+                        updateMessage();
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* COMPUTER MODE */
+
+                if (
+                    computerThinking ||
+                    currentPlayer !== "X"
+                ) {
+
+                    return;
+
+                }
+
+
+                makeMove(
+                    index,
+                    "X"
+                );
+
+
+                if (gameOver) {
+
+                    return;
+
+                }
+
+
+                currentPlayer = "O";
+
+                computerThinking = true;
+
+
+                updateMessage(
+                    "🤖 COMPUTER IS THINKING..."
+                );
+
+
+                computerTimer =
+                    setTimeout(
+                        computerTurn,
+                        550
+                    );
+
+            }
+        );
+
+    });
+
+
+    /* =========================================
+       MODE BUTTONS
+    ========================================== */
+
+    modeButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const selectedMode =
+                    button.dataset.mode;
+
+
+                if (
+                    selectedMode !== "friend" &&
+                    selectedMode !== "computer"
+                ) {
+
+                    return;
+
+                }
+
+
+                mode =
+                    selectedMode;
+
+
+                modeButtons.forEach(
+                    item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                resetGame();
+
+            }
+        );
+
+    });
+
+
+    /* =========================================
+       RESET
+    ========================================== */
+
+    function resetGame() {
+
+        clearTimeout(
+            computerTimer
+        );
+
+
+        board = [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ];
+
+
+        currentPlayer = "X";
+
+        gameOver = false;
+
+        computerThinking = false;
+
+
+        renderBoard();
+
+        updateScore();
+
+        updateMessage();
+
+    }
+
+
+    resetButton.addEventListener(
+        "click",
+        resetGame
+    );
+
+
+    /* =========================================
+       INITIALIZE
+    ========================================== */
+
+    renderBoard();
+
+    updateScore();
+
+    updateMessage();
+
+}

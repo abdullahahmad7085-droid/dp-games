@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DP Games — Play Without Limits</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         BACKGROUND
+    ========================================== -->
+
+    <div class="background">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+
+        <div class="grid-overlay"></div>
+    </div>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <nav class="navbar">
+
+        <a href="#home" class="brand">
+        <span class="brand-dp">
+            <img src="profile.jpg" class="profile-photo" alt="Profile">
+</span>
+            <span class="brand-games">GAMES</span>
+        </a>
+
+<img src="profile.jpg" class="profile-photo" alt="Profile">
+
+<div class="nav-links">
+
+            <a href="#home">Home</a>
+            <a href="#games">Games</a>
+            <a href="#about">About</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <header class="hero" id="home">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <span class="status-dot"></span>
+                DP GAMING ARENA
+            </div>
+
+            <h1>
+                PLAY
+                <span>WITHOUT</span>
+                LIMITS
+            </h1>
+
+            <p class="hero-description">
+                Challenge yourself, compete with friends,
+                and battle against the computer.
+            </p>
+
+            <a href="#games" class="hero-button">
+                <span>ENTER ARENA</span>
+                <strong>→</strong>
+            </a>
+
+        </div>
+
+        <div class="hero-side-text">
+            DP / 2026
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         GAMES SECTION
+    ========================================== -->
+
+    <main id="games">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                <span></span>
+                SELECT YOUR CHALLENGE
+            </div>
+
+            <h2>
+                THE <strong>ARENA</strong>
+            </h2>
+
+            <p>
+                Three games. Endless challenges.
+            </p>
+
+        </div>
+
+<!-- =========================================
+     GAME 04 — CRICKET CLASH
+========================================= -->
+
+<article class="game-card cricket-card">
+
+    <div class="card-header">
+
+        <span class="game-number">
+            04
+        </span>
+
+        <span class="game-type">
+            2 OVERS • 3 WICKETS
+        </span>
+
+    </div>
+
+
+    <div class="cricket-bat-area">
+
+        <div class="cricket-ball-glow"></div>
+
+        <button
+            id="cricket-bat"
+            class="cricket-bat"
+            aria-label="Tap the bat to play"
+        >
+            🏏
+        </button>
+
+        <span class="bat-hint">
+            TAP BAT TO PLAY
+        </span>
+
+    </div>
+
+
+    <h3>
+        CRICKET
+        <span>CLASH</span>
+    </h3>
+
+
+    <p class="game-description">
+        Trust your luck, play every ball and
+        survive three wickets across two overs.
+    </p>
+
+
+    <!-- GAME MODE -->
+
+    <div class="cricket-mode-selector">
+
+        <button
+            class="cricket-mode active"
+            data-cricket-mode="friend"
+        >
+            👥 PLAY WITH FRIEND
+        </button>
+
+        <button
+            class="cricket-mode"
+            data-cricket-mode="computer"
+        >
+            🤖 PLAY WITH COMPUTER
+        </button>
+
+    </div>
+
+
+    <!-- SCOREBOARD -->
+
+    <div class="cricket-scoreboard">
+
+        <div class="cricket-team">
+
+            <span>
+                YOU
+            </span>
+
+            <strong id="cricket-player-score">
+                0/0
+            </strong>
+
+        </div>
+
+
+        <div class="cricket-middle">
+
+            <span>
+                OVERS
+            </span>
+
+            <strong id="cricket-overs">
+                0.0 / 2
+            </strong>
+
+            <small id="cricket-ball-count">
+                BALL 0 / 12
+            </small>
+
+        </div>
+
+
+        <div class="cricket-team">
+
+            <span>
+                OPPONENT
+            </span>
+
+            <strong id="cricket-opponent-score">
+                0/0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- WICKETS -->
+
+    <div class="cricket-wickets">
+
+        <span>
+            WICKETS
+        </span>
+
+        <div class="wicket-lights">
+
+            <i class="wicket alive"></i>
+            <i class="wicket alive"></i>
+            <i class="wicket alive"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        id="cricket-result"
+        class="cricket-result"
+    >
+        Tap the bat to face the ball.
+    </div>
+
+
+    <!-- BALL EVENT -->
+
+    <div
+        id="cricket-event"
+        class="cricket-event"
+    >
+        READY FOR THE FIRST BALL?
+    </div>
+
+
+    <!-- RESET -->
+
+    <button
+        id="cricket-reset"
+        class="reset-button"
+    >
+        NEW MATCH
+    </button>
+
+</article>
+
+
+        <div>
+            <span>DISTANCE</span>
+
+            <strong id="bike-distance">
+                0
+            </strong>
+            <small>M</small>
+        </div>
+
+    </div>
+
+
+    <!-- CONTROLS -->
+
+    <div class="bike-controls">
+
+        <button
+            id="bike-left"
+            class="bike-control"
+        >
+            ◀
+        
+
+</div>
+
+<!-- BIKE CONTROLS -->
+<div class="bike-controls">
+
+    <button type="button">
+        ⬅️ LEFT
+    </button>
+
+    <button type="button">
+        🏍️ RIDE
+    </button>
+
+    <button type="button">
+        RIGHT ➡️
+    </button>
+
+</div>
+
+<!-- BIKE SHOP -->
+<div class="bike-shop">
+
+    <div class="bike-option">
+        <span class="bike-icon">🏍️</span>
+        <h4>INDIAN 125</h4>
+        <p>Starter Bike</p>
+        <button type="button">OWNED</button>
+    </div>
+
+    <div class="bike-option">
+        <span class="bike-icon">🏍️</span>
+        <h4>STREET 200</h4>
+        <p>⚡ Speed +20</p>
+        <button type="button">🪙 500</button>
+    </div>
+
+    <div class="bike-option">
+        <span class="bike-icon">🏍️</span>
+        <h4>RACING 500</h4>
+        <p>🔥 Speed +50</p>
+        <button type="button">🪙 1500</button>
+    </div>
+
+</div>
+
+</article>
+
+        <div class="games-grid">
+
+
+            <!-- =====================================
+                 GAME 01 — NUMBER GUESSING
+            ====================================== -->
+
+            <article class="game-card">
+
+                <div class="card-header">
+
+                    <span class="game-number">
+                        01
+                    </span>
+
+                    <span class="game-type">
+                        SOLO
+                    </span>
+
+                </div>
+
+
+                <div class="game-icon-wrapper">
+                    <div class="game-icon">
+                        🎯
+                    </div>
+                </div>
+
+
+                <h3>
+                    NUMBER
+                    <span>GUESSING</span>
+                </h3>
+
+                <p class="game-description">
+                    Find the secret number hidden
+                    somewhere between 1 and 100.
+                </p>
+
+
+                <div class="number-range">
+
+                    <span>01</span>
+
+                    <div class="range-line">
+                        <div class="range-dot"></div>
+                    </div>
+
+                    <span>100</span>
+
+                </div>
+
+
+                <div class="game-control">
+
+                    <input
+                        type="number"
+                        id="guess-input"
+                        placeholder="ENTER NUMBER"
+                        min="1"
+                        max="100"
+                    >
+
+                    <button
+                        id="guess-button"
+                        class="primary-button"
+                    >
+                        GUESS
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="guess-message"
+                    class="game-result"
+                >
+                    Make your first guess.
+                </div>
+
+
+                <div class="game-stat">
+
+                    <span>
+                        ATTEMPTS
+                    </span>
+
+                    <strong id="attempt-count">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <button
+                    id="guess-reset"
+                    class="reset-button"
+                >
+                    NEW GAME
+                </button>
+
+            </article>
+
+
+            <!-- =====================================
+                 GAME 02 — ROCK PAPER SCISSORS
+            ====================================== -->
+
+            <article class="game-card">
+
+                <div class="card-header">
+
+                    <span class="game-number">
+                        02
+                    </span>
+
+                    <span class="game-type">
+                        VS CPU
+                    </span>
+
+                </div>
+
+
+                <div class="game-icon-wrapper">
+                    <div class="game-icon">
+                        ⚔️
+                    </div>
+                </div>
+
+
+                <h3>
+                    ROCK
+                    <span>PAPER SCISSORS</span>
+                </h3>
+
+                <p class="game-description">
+                    Pick your weapon and challenge
+                    the computer in real time.
+                </p>
+
+
+                <div class="rps-choices">
+
+                    <button
+                        class="rps-choice"
+                        data-choice="rock"
+                        aria-label="Rock"
+                    >
+                        ✊
+                    </button>
+
+                    <button
+                        class="rps-choice"
+                        data-choice="paper"
+                        aria-label="Paper"
+                    >
+                        ✋
+                    </button>
+
+                    <button
+                        class="rps-choice"
+                        data-choice="scissors"
+                        aria-label="Scissors"
+                    >
+                        ✌️
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="rps-result"
+                    class="game-result"
+                >
+                    Choose your move.
+                </div>
+
+
+                <div class="score-board">
+
+                    <div class="score-item">
+
+                        <span>YOU</span>
+
+                        <strong id="player-score">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="versus">
+                        VS
+                    </div>
+
+
+                    <div class="score-item">
+
+                        <span>CPU</span>
+
+                        <strong id="computer-score">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="rps-reset"
+                    class="reset-button"
+                >
+                    RESET MATCH
+                </button>
+
+            </article>
+
+
+            <!-- =====================================
+                 GAME 03 — TIC TAC TOE
+            ====================================== -->
+
+            <article class="game-card ttt-card">
+
+                <div class="card-header">
+
+                    <span class="game-number">
+                        03
+                    </span>
+
+                    <span class="game-type">
+                        2 MODES
+                    </span>
+
+                </div>
+
+
+                <div class="game-icon-wrapper">
+                    <div class="game-icon">
+                        ❌⭕
+                    </div>
+                </div>
+
+
+                <h3>
+                    TIC TAC
+                    <span>TOE</span>
+                </h3>
+
+                <p class="game-description">
+                    Play against a friend or
+                    challenge the computer.
+                </p>
+
+
+                <!-- MODE -->
+
+                <div class="ttt-mode-selector">
+
+                    <button
+                        class="ttt-mode active"
+                        data-mode="friend"
+                    >
+                        👥 FRIEND
+                    </button>
+
+                    <button
+                        class="ttt-mode"
+                        data-mode="computer"
+                    >
+                        🤖 COMPUTER
+                    </button>
+
+                </div>
+
+
+                <!-- BOARD -->
+
+                <div class="ttt-board">
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="0"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="1"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="2"
+                    ></button>
+
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="3"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="4"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="5"
+                    ></button>
+
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="6"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="7"
+                    ></button>
+
+                    <button
+                        class="ttt-cell"
+                        data-cell="8"
+                    ></button>
+
+                </div>
+
+
+                <div
+                    id="ttt-result"
+                    class="game-result"
+                >
+                    Player X's turn
+                </div>
+
+
+                <div class="score-board">
+
+                    <div class="score-item">
+
+                        <span>X</span>
+
+                        <strong id="x-score">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="versus">
+                        VS
+                    </div>
+
+
+                    <div class="score-item">
+
+                        <span>O</span>
+
+                        <strong id="o-score">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="ttt-reset"
+                    class="reset-button"
+                >
+                    NEW ROUND
+                </button>
+
+            </article>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         ABOUT
+    ========================================== -->
+
+    <section
+        class="about-section"
+        id="about"
+    >
+
+        <div class="about-content">
+
+            <div class="section-label">
+                <span></span>
+                ABOUT DP GAMES
+            </div>
+
+            <h2>
+                PLAY.
+                <strong>CHALLENGE.</strong>
+                WIN.
+            </h2>
+
+            <p>
+                DP Games is a personal gaming arena
+                built for quick challenges, friendly
+                competition and endless practice.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <div class="footer-brand">
+            DP GAMES
+        </div>
+
+        <p>
+            © 2026 DP Games. All Rights Reserved.
+        </p>
+
+        <span>
+            PLAY WITHOUT LIMITS ⚡
+        </span>
+
+    </footer>
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="./script.js"></script>
+
+</body>
+
+</html>
