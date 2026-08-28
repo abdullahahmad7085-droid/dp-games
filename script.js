@@ -1222,3 +1222,149 @@ function initTicTacToe() {
     updateMessage();
 
 }
+/* ================================
+   CRICKET CLASH
+================================ */
+
+(() => {
+    const bat = document.getElementById("cricket-bat");
+    const reset = document.getElementById("cricket-reset");
+
+    const modeButtons = document.querySelectorAll(".cricket-mode");
+
+    const playerScore = document.getElementById("cricket-player-score");
+    const opponentScore = document.getElementById("cricket-opponent-score");
+    const overs = document.getElementById("cricket-overs");
+    const ballCount = document.getElementById("cricket-ball-count");
+
+    const result = document.getElementById("cricket-result");
+    const eventBox = document.getElementById("cricket-event");
+
+    const wicketLights = document.querySelectorAll(".wicket");
+
+    if (!bat || !reset) return;
+
+    let playerRuns = 0;
+    let opponentRuns = 0;
+    let wickets = 0;
+    let balls = 0;
+    let mode = "friend";
+    let gameOver = false;
+
+    const MAX_BALLS = 12;
+    const MAX_WICKETS = 3;
+
+    function updateBoard() {
+        playerScore.textContent = `${playerRuns}/${wickets}`;
+        opponentScore.textContent = `${opponentRuns}/0`;
+
+        const overNumber = Math.floor(balls / 6);
+        const ballNumber = balls % 6;
+
+        overs.textContent = `${overNumber}.${ballNumber} / 2`;
+        ballCount.textContent = `BALL ${balls} / 12`;
+
+        wicketLights.forEach((light, index) => {
+            light.classList.toggle("alive", index >= wickets);
+        });
+    }
+
+    function opponentPlay() {
+        const choices = [0, 1, 1, 2, 2, 3, 4, 6];
+        return choices[Math.floor(Math.random() * choices.length)];
+    }
+
+    function playBall() {
+        if (gameOver) return;
+
+        balls++;
+
+        const possibleShots = [0, 1, 2, 3, 4, 6, "W"];
+        const shot =
+            possibleShots[Math.floor(Math.random() * possibleShots.length)];
+
+        if (shot === "W") {
+            wickets++;
+
+            result.textContent = "OUT! 🏏";
+            eventBox.textContent = `WICKET ${wickets} — Ball ${balls}`;
+        } else {
+            playerRuns += shot;
+
+            result.textContent = `YOU SCORED ${shot} RUN${shot === 1 ? "" : "S"}!`;
+
+            eventBox.textContent =
+                shot === 6
+                    ? "SIX! 🔥"
+                    : shot === 4
+                    ? "FOUR! 🚀"
+                    : `${shot} run${shot === 1 ? "" : "s"}!`;
+        }
+
+        if (mode === "computer") {
+            opponentRuns += opponentPlay();
+        } else {
+            opponentRuns += opponentPlay();
+        }
+
+        updateBoard();
+
+        if (wickets >= MAX_WICKETS || balls >= MAX_BALLS) {
+            finishGame();
+        }
+    }
+
+    function finishGame() {
+        gameOver = true;
+
+        if (playerRuns > opponentRuns) {
+            result.textContent = "YOU WIN! 🏆";
+            eventBox.textContent =
+                `${playerRuns} runs vs ${opponentRuns} runs`;
+        } else if (playerRuns < opponentRuns) {
+            result.textContent = "OPPONENT WINS! 😈";
+            eventBox.textContent =
+                `${opponentRuns} runs vs ${playerRuns} runs`;
+        } else {
+            result.textContent = "MATCH DRAW! 🤝";
+            eventBox.textContent =
+                `${playerRuns} runs each`;
+        }
+    }
+
+    function resetGame() {
+        playerRuns = 0;
+        opponentRuns = 0;
+        wickets = 0;
+        balls = 0;
+        gameOver = false;
+
+        result.textContent = "Tap the bat to face the ball.";
+        eventBox.textContent = "READY FOR THE FIRST BALL?";
+
+        updateBoard();
+    }
+
+    modeButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            modeButtons.forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            mode = button.dataset.cricketMode;
+
+            resetGame();
+
+            eventBox.textContent =
+                mode === "computer"
+                    ? "COMPUTER MODE SELECTED 🤖"
+                    : "FRIEND MODE SELECTED 👥";
+        });
+    });
+
+    bat.addEventListener("click", playBall);
+
+    reset.addEventListener("click", resetGame);
+
+    updateBoard();
+})();
