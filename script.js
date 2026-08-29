@@ -1369,3 +1369,84 @@ function initTicTacToe() {
 
     updateBoard();
 })();
+// ==============================
+// REACTION RUSH
+// ==============================
+
+(() => {
+    const button = document.getElementById("reaction-button");
+    const timeDisplay = document.getElementById("reaction-time");
+    const bestDisplay = document.getElementById("reaction-best");
+
+    if (!button || !timeDisplay || !bestDisplay) return;
+
+    let startTime = 0;
+    let timer = null;
+    let waiting = false;
+    let ready = false;
+
+    let bestTime = localStorage.getItem("reactionBest");
+
+    if (bestTime) {
+        bestDisplay.textContent = bestTime;
+    }
+
+    function startReactionTest() {
+        clearTimeout(timer);
+
+        waiting = true;
+        ready = false;
+        startTime = 0;
+
+        button.textContent = "WAIT";
+        button.classList.remove("ready");
+
+        timeDisplay.textContent = "—";
+
+        const delay = Math.floor(Math.random() * 3000) + 2000;
+
+        timer = setTimeout(() => {
+            ready = true;
+            waiting = false;
+            startTime = performance.now();
+
+            button.textContent = "TAP!";
+            button.classList.add("ready");
+        }, delay);
+    }
+
+    button.addEventListener("click", () => {
+
+        if (waiting) {
+            clearTimeout(timer);
+
+            waiting = false;
+            button.textContent = "TOO SOON!";
+            timeDisplay.textContent = "—";
+
+            setTimeout(startReactionTest, 1200);
+            return;
+        }
+
+        if (ready) {
+            const reactionTime = Math.round(performance.now() - startTime);
+
+            ready = false;
+
+            button.classList.remove("ready");
+            button.textContent = "WAIT";
+
+            timeDisplay.textContent = reactionTime;
+
+            if (!bestTime || reactionTime < Number(bestTime)) {
+                bestTime = reactionTime;
+                localStorage.setItem("reactionBest", bestTime);
+                bestDisplay.textContent = bestTime;
+            }
+
+            setTimeout(startReactionTest, 1500);
+        }
+    });
+
+    startReactionTest();
+})();
