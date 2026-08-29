@@ -1450,3 +1450,117 @@ function initTicTacToe() {
 
     startReactionTest();
 })();
+// ===============================
+// REACTION RUSH - FIXED VERSION
+// ===============================
+
+const reactionButtonOld = document.getElementById("reaction-button");
+
+if (reactionButtonOld) {
+
+    // Remove old click events
+    const reactionButton = reactionButtonOld.cloneNode(true);
+    reactionButtonOld.replaceWith(reactionButton);
+
+    const timeDisplay = document.getElementById("reaction-time");
+    const bestDisplay = document.getElementById("reaction-best");
+
+    let reactionWaiting = false;
+    let reactionReady = false;
+    let reactionStartTime = 0;
+    let reactionTimer = null;
+
+    let reactionBest = localStorage.getItem("reactionBest");
+
+    if (reactionBest && bestDisplay) {
+        bestDisplay.textContent = reactionBest;
+    }
+
+    function startReactionRound() {
+
+        clearTimeout(reactionTimer);
+
+        reactionWaiting = true;
+        reactionReady = false;
+
+        reactionButton.textContent = "WAIT";
+        reactionButton.classList.remove("ready");
+
+        if (timeDisplay) {
+            timeDisplay.textContent = "--";
+        }
+
+        const delay = Math.floor(Math.random() * 2500) + 1500;
+
+        reactionTimer = setTimeout(() => {
+
+            reactionWaiting = false;
+            reactionReady = true;
+
+            reactionStartTime = performance.now();
+
+            reactionButton.textContent = "TAP!";
+            reactionButton.classList.add("ready");
+
+        }, delay);
+    }
+
+    reactionButton.addEventListener("click", () => {
+
+        // Clicked too early
+        if (reactionWaiting) {
+
+            clearTimeout(reactionTimer);
+
+            reactionWaiting = false;
+            reactionReady = false;
+
+            reactionButton.textContent = "TOO SOON!";
+            reactionButton.classList.remove("ready");
+
+            if (timeDisplay) {
+                timeDisplay.textContent = "--";
+            }
+
+            setTimeout(startReactionRound, 1200);
+
+            return;
+        }
+
+        // Correct reaction
+        if (reactionReady) {
+
+            const reactionTime = Math.round(
+                performance.now() - reactionStartTime
+            );
+
+            reactionReady = false;
+
+            reactionButton.classList.remove("ready");
+            reactionButton.textContent = "WAIT";
+
+            if (timeDisplay) {
+                timeDisplay.textContent = reactionTime;
+            }
+
+            if (!reactionBest || reactionTime < Number(reactionBest)) {
+
+                reactionBest = reactionTime;
+
+                localStorage.setItem(
+                    "reactionBest",
+                    reactionBest
+                );
+
+                if (bestDisplay) {
+                    bestDisplay.textContent = reactionBest;
+                }
+            }
+
+            setTimeout(startReactionRound, 1500);
+        }
+    });
+
+    // Start first round
+    startReactionRound();
+}
