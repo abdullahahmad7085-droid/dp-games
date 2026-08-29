@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Reaction Test - DP Games</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #070b18, #101a3d);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 30px;
+      background: #18285c;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin: 10px 0;
+    }
+
+    .subtitle {
+      color: #b8c1df;
+      margin-bottom: 25px;
+    }
+
+    #start {
+      border: none;
+      padding: 13px 28px;
+      border-radius: 12px;
+      background: #20d9ff;
+      color: #06101c;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #start:hover {
+      transform: scale(1.03);
+    }
+
+    #box {
+      width: 100%;
+      height: 330px;
+      border-radius: 22px;
+      background: #171f3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.15s;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    #box.ready {
+      background: #19d879;
+      color: #06140d;
+    }
+
+    #box.too-soon {
+      background: #e53935;
+    }
+
+    #result {
+      min-height: 35px;
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 15px;
+      color: #c8d0ea;
+    }
+
+    .stat strong {
+      display: block;
+      color: white;
+      font-size: 22px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      #box {
+        height: 280px;
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="game">
+
+    <div class="badge">⚡ DP GAMING ARENA</div>
+
+    <h1>Reaction Test</h1>
+
+    <p class="subtitle">
+      How fast can you react?
+    </p>
+
+    <button id="start">START GAME</button>
+
+    <div id="box">
+      Press START to begin
+    </div>
+
+    <div id="result"></div>
+
+    <div class="stats">
+      <div class="stat">
+        Best
+        <strong id="best">—</strong>
+      </div>
+
+      <div class="stat">
+        Last
+        <strong id="last">—</strong>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const startButton = document.getElementById("start");
+    const box = document.getElementById("box");
+    const result = document.getElementById("result");
+    const bestDisplay = document.getElementById("best");
+    const lastDisplay = document.getElementById("last");
+
+    let startTime = null;
+    let timer = null;
+    let waiting = false;
+    let gameStarted = false;
+
+    let bestScore = localStorage.getItem("dpReactionBest");
+
+    if (bestScore) {
+      bestDisplay.textContent = bestScore + " ms";
+    }
+
+    startButton.addEventListener("click", function () {
+
+      clearTimeout(timer);
+
+      startTime = null;
+      waiting = true;
+      gameStarted = true;
+
+      box.className = "";
+      box.textContent = "WAIT...";
+      result.textContent = "";
+
+      startButton.textContent = "WAITING...";
+
+      const delay = Math.floor(Math.random() * 3000) + 2000;
+
+      timer = setTimeout(function () {
+
+        box.className = "ready";
+        box.textContent = "CLICK NOW!";
+
+        startTime = performance.now();
+        waiting = false;
+
+        startButton.textContent = "PLAY AGAIN";
+
+      }, delay);
+    });
+
+    box.addEventListener("click", function () {
+
+      if (!gameStarted) {
+        return;
+      }
+
+      if (waiting) {
+
+        clearTimeout(timer);
+
+        waiting = false;
+        gameStarted = false;
+        startTime = null;
+
+        box.className = "too-soon";
+        box.textContent = "TOO SOON!";
+
+        result.textContent = "😅 Wait for the green signal.";
+
+        startButton.textContent = "TRY AGAIN";
+
+        return;
+      }
+
+      if (startTime !== null) {
+
+        const reactionTime = Math.round(
+          performance.now() - startTime
+        );
+
+        startTime = null;
+        gameStarted = false;
+
+        box.className = "";
+        box.textContent = "GOOD JOB!";
+
+        lastDisplay.textContent = reactionTime + " ms";
+
+        if (!bestScore || reactionTime < Number(bestScore)) {
+
+          bestScore = reactionTime;
+
+          localStorage.setItem(
+            "dpReactionBest",
+            bestScore
+          );
+
+          bestDisplay.textContent = bestScore + " ms";
+
+          result.textContent =
+            "🏆 NEW BEST! " + reactionTime + " ms";
+
+        } else {
+
+          result.textContent =
+            "⚡ Your reaction time: " + reactionTime + " ms";
+        }
+
+        startButton.textContent = "PLAY AGAIN";
+      }
+    });
+  </script>
+
+</body>
+</html>
